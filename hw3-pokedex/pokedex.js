@@ -4,6 +4,24 @@ var picUrl = "https://courses.cs.washington.edu/courses/cse154/webservices/poked
 var showPokemon = ["bulbasaur", "charmander", "squirtle"]
 var pokeData = ""
 
+function pokeClick($this){
+    var pokeName = $this.id;
+    console.log(pokeName)
+
+    var req = new XMLHttpRequest();
+
+    req.addEventListener("readystatechange",function(){
+        if(this.readyState == 4 && this.status == 200){
+            //parse and display data
+            var data = req.responseText;
+            console.log(data)
+        }
+    });
+
+    req.open('GET', dataUrl + '?pokemon=' + pokeName, true);
+    req.send();
+}
+
 const loadData = () => {
     var pokedex = document.getElementById("pokedex-view");
     var req = new XMLHttpRequest();
@@ -18,9 +36,9 @@ const loadData = () => {
             for(p in pokeData){
                 if(p % 2 == 1){
                     if(!(showPokemon.includes(pokeData[p]))){
-                        pokedex.innerHTML += "<img src='" + picUrl + pokeData[p] + ".png' alt='pokemon' class='sprite'>"
+                        pokedex.innerHTML += "<img id='" + pokeData[p] + "' src='" + picUrl + pokeData[p] + ".png' alt='pokemon' class='sprite'>"
                     } else{
-                        pokedex.innerHTML += "<img src='" + picUrl + pokeData[p] + ".png' alt='pokemon' class='sprite found'>"
+                        pokedex.innerHTML += "<img id='" + pokeData[p] + "' src='" + picUrl + pokeData[p] + ".png' alt='pokemon' class='sprite found' onclick='pokeClick(this);'>"
                     }
                 }
             }
